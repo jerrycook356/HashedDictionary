@@ -151,10 +151,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DictionaryInterface.h" />
+    <ClInclude Include="Entry.h" />
+    <ClInclude Include="HashedDictionary.h" />
+    <ClInclude Include="HashedEntry.h" />
+    <ClInclude Include="HashList.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DictionaryHashedLinked.cpp" />
+    <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="HashedDictionary.cpp" />
+    <ClCompile Include="HashedEntry.cpp" />
+    <ClCompile Include="HashList.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
