@@ -11,11 +11,16 @@ class HashedEntry :public Entry<KeyType, ItemType>
 {
 private:
 	HashedEntry<KeyType, ItemType>* nextPtr;
+	ItemType  item;
+	KeyType searchKey;
 public:
 	HashedEntry();
-	HashedEntry(KeyType searchKey, ItemType newEntry);
-	HashedEntry(KeyType  searchKey, ItemType newEntry, HashedEntry<KeyType, ItemType>* nextEntryPtr);
+	HashedEntry(ItemType newEntry,KeyType searchKey);
+	HashedEntry(ItemType newEntry,KeyType  searchKey, HashedEntry<KeyType, ItemType>* nextEntryPtr);
 	void setNext(HashedEntry<KeyType, ItemType>* nextEntryPtr);
 	HashedEntry<KeyType, ItemType> getNext();
+	KeyType getKey();
+
+	bool operator == (const Entry<KeyType, ItemType>& rightHandItem)const;
 };
 #include "HashedEntry.cpp"

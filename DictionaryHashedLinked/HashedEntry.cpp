@@ -2,6 +2,7 @@
 #include "HashedEntry.h"
 
 
+
 template<class KeyType,class ItemType>
 HashedEntry<KeyType, ItemType>::HashedEntry() :nextPtr(nullptr)
 {
@@ -9,7 +10,7 @@ HashedEntry<KeyType, ItemType>::HashedEntry() :nextPtr(nullptr)
 }
 
 template<class KeyType, class ItemType>
-HashedEntry<KeyType, ItemType>::HashedEntry(KeyType newSearchKey, ItemType newEntry)
+HashedEntry<KeyType, ItemType>::HashedEntry(ItemType newEntry,KeyType newSearchKey)
 {
 	item = newEntry;
 	searchKey = newSearchKey;
@@ -17,9 +18,9 @@ HashedEntry<KeyType, ItemType>::HashedEntry(KeyType newSearchKey, ItemType newEn
 }
 
 template<class KeyType, class ItemType>
-HashedEntry<KeyType, ItemType>::HashedEntry(KeyType searchKey, ItemType newEntry, HashedEntry<KeyType, ItemType>* nextEntryPtr)
+HashedEntry<KeyType, ItemType>::HashedEntry(ItemType newEntry,KeyType newSearchKey, HashedEntry<KeyType, ItemType>* nextEntryPtr)
 {
-	searchKey = searchKey;
+	searchKey = newSearchKey;
 	item = newEntry;
 	nextPtr = nextEntryPtr;
 
@@ -36,3 +37,16 @@ HashedEntry<KeyType, ItemType> HashedEntry<KeyType, ItemType>::getNext()
 {
 	return nextPtr;
 }
+
+template<class KeyType, class ItemType>
+KeyType HashedEntry<KeyType, ItemType>::getKey()
+{
+	return searchKey;
+}
+
+template<class KeyType, class ItemType>
+bool HashedEntry<KeyType, ItemType>::operator==(const Entry<KeyType, ItemType>& rightHandItem) const
+{
+	return Entry::operator ==(HashedEntry<KeyType, ItemType>& rightHandItem);
+}
+
