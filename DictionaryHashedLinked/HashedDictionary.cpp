@@ -6,10 +6,33 @@
 
 
 
+
 template<class KeyType, class ItemType>
 HashedDictionary<KeyType, ItemType>::HashedDictionary()
 {
 	hashTable = new HashedEntry<KeyType, ItemType>*[DEFAULT_SIZE];
+	for (int i = 0 ;i < DEFAULT_SIZE;i++)
+	{
+		hashTable[i] = nullptr;
+	}
+}
+
+template<class KeyType, class ItemType>
+void HashedDictionary<KeyType, ItemType>::clear()
+{
+	delete[]hashTable;
+	hashTable = nullptr;
+	hashTable = new HashedEntry<KeyType, ItemType>*[DEFAULT_SIZE];
+	for (int i = 0;i < DEFAULT_SIZE;i++)
+	{
+		hashTable[i] = nullptr;
+	}
+}
+
+template<class KeyType, class ItemType>
+bool HashedDictionary<KeyType, ItemType>::isEmpty() const
+{
+	return itemCount == 0;
 }
 
 template<class KeyType, class ItemType>
@@ -18,35 +41,41 @@ bool HashedDictionary<KeyType, ItemType>::ifEntryExists(HashedEntry<KeyType, Ite
 	
 
 	bool found = false;
+	HashedEntry<KeyType, ItemType>* curPtr = hashTable[hashIndex];
 	HashedEntry<KeyType, ItemType>* tempPtr = checkPtr;
-	if ((hashTable[hashIndex] == tempPtr) //first entry on chain matches entry to be added
+	if (curPtr->getKey() ==  tempPtr->getKey()) //first entry on chain matches entry to be added
 	{
 		found = true;
+		
 	}
 	else
 	{
-		while ((tempPtr != nullptr)&& (!found))
+		
+		while ((curPtr->getNext() != nullptr)&& (!found))
 		{
-			tempPtr = tempPtr->getNext();
+			curPtr = curPtr->getNext();
+			if (curPtr == tempPtr)
+				found = true;
 
 		}
 	}
 	
-	
-	return false;
+	if(found)
+		cout << endl << " item with key = " << tempPtr->getKey() << " not added, it allready exists.";
+	return found;
 }
 
 template<class KeyType,class ItemType>
 int HashedDictionary<KeyType, ItemType>::getHashIndex(const KeyType& key)const
 {
 	int stringLength = key.length();
-	int searchKey;
+	int searchKey = 0;
 	for (int letters = 0; letters < stringLength;letters++)
 	{
 		for (int powers = stringLength;powers > 0;powers--)
 		{
 			int letterNumber = key[letters];
-			int numberToMultiply = pow(15, powers);
+			int numberToMultiply = pow(32, powers);
 			searchKey += letterNumber * numberToMultiply;
 		}
 	}
@@ -61,19 +90,23 @@ bool HashedDictionary<KeyType, ItemType>::add(const ItemType & newItem, const Ke
 	HashedEntry<KeyType, ItemType>* entryToAddPtr = new HashedEntry<KeyType, ItemType>(newItem, searchKey);
 
 	int itemHashIndex = getHashIndex(searchKey);
-
 	//add entry to chain at itemHashIndex;
 	if (hashTable[itemHashIndex] == nullptr)
 	{
 		hashTable[itemHashIndex] = entryToAddPtr;
+		itemCount++;
 	}
-	else
+	else 
 	{
 		//item only added to hashTable if it is unique, no duplicates
-		if(!entryAlreadyExists(entryToAddPtr,itemHashIndex))
-		entryToAddPtr->setNext(hashTable[itemHashIndex]);
-		hashTable[itemHashIndex] = entryToAddPtr;
+		if (!ifEntryExists(entryToAddPtr, itemHashIndex))
+		{
+			entryToAddPtr->setNext(hashTable[itemHashIndex]);
+			hashTable[itemHashIndex] = entryToAddPtr;
+			itemCount++;
+		}
 	}
+	
 	return true;
 }//end add
 
@@ -119,12 +152,94 @@ bool HashedDictionary<KeyType, ItemType>::remove(const KeyType & searchKey)
 
 
 	}//end if
-}//end remove
+	if (itemFound)
+		itemCount--;
+	return itemFound;
+}
+template<class KeyType, class ItemType>
+ItemType HashedDictionary<KeyType, ItemType>::getItem(const KeyType & searchKey)const throw(NotFoundException)
+{
+	int hashedIndex = getHashIndex(searchKey);
+	ItemType foundItem;
+	bool found = false;
+	 
+	HashedEntry<KeyType, ItemType>* curPtr = hashTable[hashedIndex];
+	if (curPtr == nullptr) //chain is empty
+	{
+		throw new NotFoundException(" ");
+	}
+	else
+	{
+		if (curPtr->getKey() == searchKey) //first node in the chain matches the search key
+		{
+			foundItem = curPtr->getItem();
+			found = true;
+		}
+		else
+		{
+			while ((curPtr != nullptr) && (!found))
+			{
+				curPtr = curPtr->getNext();
+				if (curPtr->getKey() == searchKey)
+				{
+					found = true;
+					foundItem = curPtr->getItem();
+				}
+				
+			}
+
+		}
+		if (!found)
+		{
+			throw new NotFoundException(" ");
+			foundItem = -1;
+		}
+	}
+	return foundItem;
+}
+template<class KeyType, class ItemType>
+bool HashedDictionary<KeyType, ItemType>::contains(const KeyType & searchKey) const
+{
+	bool found = false;
+	HashedEntry<KeyType, ItemType>* curPtr = hashTable[0];
+	for (int i = 0; i < DEFAULT_SIZE;i++)
+	{
+		curPtr = hashTable[i];
+		if (curPtr->getKey() == searchKey)
+		{
+			found = true;
+		}
+
+	}
+	return found;
+}
+template<class KeyType, class ItemType>
+void HashedDictionary<KeyType, ItemType>::traverse(void visit(ItemType&)) const
+{
+	for (int i = 0; i < DEFAULT_SIZE;i++)
+	{
+		
+		HashedEntry<KeyType, ItemType>* curPtr = hashTable[i];
+		if (curPtr != nullptr)
+		{
+			ItemType item = curPtr->getItem();
+			visit(item);
+		}
+	}
+}
+//end remove
+
 
 template<class KeyType, class ItemType>
 HashedDictionary<KeyType, ItemType>::~HashedDictionary()
 {
-	delete hashTable[];
+	delete[] hashTable;
 	hashTable = nullptr;
+}
+
+template<class KeyType,class ItemType>
+int HashedDictionary<KeyType, ItemType>::getNumberOfItems()const
+{
+	return itemCount;
 }
 

@@ -18,9 +18,6 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DictionaryInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HashedDictionary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -28,6 +25,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HashedEntry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NotFoundException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DictionaryInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,13 +41,7 @@
     <ClCompile Include="DictionaryHashedLinked.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Entry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HashedDictionary.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HashedEntry.cpp">
+    <ClCompile Include="NotFoundException.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

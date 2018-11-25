@@ -33,7 +33,7 @@ void HashedEntry<KeyType, ItemType>::setNext(HashedEntry<KeyType, ItemType>* nex
 }
 
 template<class KeyType, class ItemType>
-HashedEntry<KeyType, ItemType> HashedEntry<KeyType, ItemType>::getNext()
+HashedEntry<KeyType, ItemType>* HashedEntry<KeyType, ItemType>::getNext()
 {
 	return nextPtr;
 }
@@ -44,9 +44,10 @@ KeyType HashedEntry<KeyType, ItemType>::getKey()
 	return searchKey;
 }
 
-template<class KeyType, class ItemType>
-bool HashedEntry<KeyType, ItemType>::operator==(const Entry<KeyType, ItemType>& rightHandItem) const
+
+template <class KeyType,class ItemType>
+ItemType HashedEntry<KeyType, ItemType>::getItem()
 {
-	return Entry::operator ==(HashedEntry<KeyType, ItemType>& rightHandItem);
+	return item;
 }
 

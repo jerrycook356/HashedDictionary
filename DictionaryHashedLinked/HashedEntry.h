@@ -18,9 +18,10 @@ public:
 	HashedEntry(ItemType newEntry,KeyType searchKey);
 	HashedEntry(ItemType newEntry,KeyType  searchKey, HashedEntry<KeyType, ItemType>* nextEntryPtr);
 	void setNext(HashedEntry<KeyType, ItemType>* nextEntryPtr);
-	HashedEntry<KeyType, ItemType> getNext();
+	HashedEntry<KeyType, ItemType>* getNext();
+	ItemType getItem();
 	KeyType getKey();
 
-	bool operator == (const Entry<KeyType, ItemType>& rightHandItem)const;
+	
 };
 #include "HashedEntry.cpp"
